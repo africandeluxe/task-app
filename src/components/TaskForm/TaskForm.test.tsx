@@ -7,9 +7,8 @@ describe('TaskForm Component', () => {
 
   it('allows input to be entered and submitted', () => {
     render(<TaskForm onAddTask={onAddTask} />);
-
     const input = screen.getByPlaceholderText('Enter task');
-    const button = screen.getByRole('button');
+    const button = screen.getByRole('button', { name: /add task/i });
 
     fireEvent.change(input, { target: { value: 'New Task' } });
 
@@ -17,4 +16,13 @@ describe('TaskForm Component', () => {
     
     expect(onAddTask).toHaveBeenCalledWith('New Task');
   });
+
+
+it('prevents empty task submission', () => {
+  render(<TaskForm onAddTask={onAddTask} />);
+  const button = screen.getByRole('button', { name: /add task/i });
+  
+  fireEvent.click(button);
+  expect(onAddTask).not.toHaveBeenCalled();
+});
 });
