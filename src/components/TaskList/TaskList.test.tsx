@@ -14,13 +14,11 @@ const tasks = [ {
   id: 2, 
   title: 'Task 2', 
   completed: true 
-}
+}];
 
-];
 const onEdit = jest.fn();
 const onDelete = jest.fn();
 const onToggleComplete = jest.fn();
-
 
   it('renders all tasks', () => {
     render(<TaskList tasks={tasks} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);

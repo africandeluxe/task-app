@@ -38,5 +38,4 @@ describe('TaskCounter Component', () => {
     expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
     expect(screen.getByText('Completed Tasks: 0')).toBeInTheDocument();
   });
-  
 });
