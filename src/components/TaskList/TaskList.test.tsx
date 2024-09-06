@@ -2,6 +2,9 @@ import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import TaskList from '../TaskList';
 
+describe('TaskList Component', () => {
+  afterEach(cleanup);
+  
 const tasks = [ { 
   id: 1, 
   title: 'Task 1', 
@@ -18,24 +21,18 @@ const onEdit = jest.fn();
 const onDelete = jest.fn();
 const onToggleComplete = jest.fn();
 
-describe('TaskList Component', () => {
-
-beforeEach(() => {
-  render(<TaskList tasks={tasks} onEdit={onEdit} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
-});
-
-afterEach(() => {
-  cleanup();
-});
-
 
   it('renders all tasks', () => {
+    render(<TaskList tasks={tasks} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+
     const listItems = screen.getAllByRole('listitem');
 
     expect(listItems).toHaveLength(tasks.length);
   });
 
   it('interactions affect multiple items', () => {
+    render(<TaskList tasks={tasks} onEdit={onEdit} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
+
     const checkboxes = screen.getAllByRole('checkbox');
 
     checkboxes.forEach(checkbox => fireEvent.click(checkbox));
@@ -43,11 +40,19 @@ afterEach(() => {
     expect(onToggleComplete).toHaveBeenCalledTimes(tasks.length);
   });
 
-  it('checks for no tasks scenario', () => {
-    render(<TaskList tasks={[]} onEdit={onEdit} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
+  it('ensures checkboxes reflect task completion state', () => {
+    render(<TaskList tasks={tasks} onEdit={onEdit} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
     
-    const list = screen.getByRole('list');
+    const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+    
+    expect(checkboxes[0].checked).toBe(false);
+    expect(checkboxes[1].checked).toBe(true);
+  });
 
-    expect(list).toBeEmptyDOMElement();
+  it('checks for no tasks scenario', () => {
+    render(<TaskList tasks={[]} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+    const lists = screen.queryAllByRole('list'); 
+    expect(lists).toHaveLength(1); 
+    expect(lists[0]).toBeEmptyDOMElement(); 
   });
 });

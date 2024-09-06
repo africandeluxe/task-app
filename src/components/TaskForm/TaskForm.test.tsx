@@ -18,11 +18,16 @@ describe('TaskForm Component', () => {
   });
 
 
-it('prevents empty task submission', () => {
-  render(<TaskForm onAddTask={onAddTask} />);
-  const button = screen.getByRole('button', { name: /add task/i });
+  it('prevents empty task submission', () => {
+    const onAddTask = jest.fn();
+    render(<TaskForm onAddTask={onAddTask} />);
+    
+    const input = screen.getByPlaceholderText('Enter task');
+    const button = screen.getByRole('button', { name: /add task/i });
   
-  fireEvent.click(button);
-  expect(onAddTask).not.toHaveBeenCalled();
-});
+    fireEvent.change(input, { target: { value: '' } });
+    fireEvent.click(button);
+    
+    expect(onAddTask).not.toHaveBeenCalled();
+  });
 });

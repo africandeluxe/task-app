@@ -8,12 +8,14 @@ interface TaskFormProps {
 const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
   const [inputValue, setInputValue] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    if (inputValue.trim()) {
-      onAddTask(inputValue);
-      setInputValue('');
+    if (inputValue.trim() === '') {
+      return;
     }
+
+    onAddTask(inputValue);
+    setInputValue('')
   };
 
   return (
