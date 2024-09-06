@@ -30,4 +30,16 @@ describe('TaskForm Component', () => {
     
     expect(onAddTask).not.toHaveBeenCalled();
   });
+
+  it('clears input after submitting a task', () => {
+    render(<TaskForm onAddTask={jest.fn()} />);
+  
+    const input = screen.getByPlaceholderText('Enter task');
+    const button = screen.getByRole('button', { name: /add task/i });
+  
+    fireEvent.change(input, { target: { value: 'Task' } });
+    fireEvent.click(button);
+  
+    expect(input).toHaveValue('');
+  });
 });

@@ -18,4 +18,12 @@ describe('TaskCounter Component', () => {
 
     expect(screen.getByText('Completed Tasks: 3')).toBeInTheDocument();
   });
+
+  it('updates counter correctly when new tasks are added', () => {
+    render(<TaskCounter totalTasks={5} completedTasks={2} />);
+  
+    expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
+    expect(screen.getByText('Completed Tasks: 2')).toBeInTheDocument();
+  });
+  
 });

@@ -12,26 +12,23 @@ const TaskApp: React.FC = () => {
     setTasks([...tasks, { id: Date.now(), title, completed: false }]);
   };
 
-  const editTask = (id: number) => {
-    const newTitle = prompt('Edit task title');
-    if (newTitle) {
-      setTasks(tasks.map(task => (task.id === id ? { ...task, title: newTitle } : task)));
-    }
+  const editTask = (id: number, newTitle: string) => {
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, title: newTitle } : task)));
   };
 
   const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   const toggleComplete = (id: number) => {
-    setTasks(tasks.map(task => (task.id === id ? { ...task, completed: !task.completed } : task)));
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)));
   };
 
   return (
     <div className="bg-primaryBg p-6 rounded-md shadow-lg max-w-xl mx-auto">
       <h1 className="text-primaryText text-2xl font-bold mb-4">Task Manager</h1>
       <TaskForm onAddTask={addTask} />
-      <TaskCounter totalTasks={tasks.length} completedTasks={tasks.filter(task => task.completed).length} />
+      <TaskCounter totalTasks={tasks.length} completedTasks={tasks.filter((task) => task.completed).length} />
       <TaskList tasks={tasks} onEdit={editTask} onDelete={deleteTask} onToggleComplete={toggleComplete} />
     </div>
   );
