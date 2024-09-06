@@ -15,7 +15,6 @@ describe('TaskCounter Component', () => {
     render(<TaskCounter totalTasks={5} completedTasks={3} />);
 
     expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
-
     expect(screen.getByText('Completed Tasks: 3')).toBeInTheDocument();
   });
 
@@ -24,6 +23,20 @@ describe('TaskCounter Component', () => {
   
     expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
     expect(screen.getByText('Completed Tasks: 2')).toBeInTheDocument();
+  });
+
+  it('displays correct count when all tasks are completed', () => {
+    render(<TaskCounter totalTasks={5} completedTasks={5} />);
+
+    expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
+    expect(screen.getByText('Completed Tasks: 5')).toBeInTheDocument();
+  });
+  
+  it('displays correct count when no tasks are completed', () => {
+    render(<TaskCounter totalTasks={5} completedTasks={0} />);
+  
+    expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
+    expect(screen.getByText('Completed Tasks: 0')).toBeInTheDocument();
   });
   
 });
