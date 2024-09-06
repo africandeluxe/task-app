@@ -1,7 +1,8 @@
 export type Task = {
   id: number,
   title: string,
-  completed: boolean
+  completed: boolean,
+  dueDate: string
 }
 
 export type TaskItemProps = {

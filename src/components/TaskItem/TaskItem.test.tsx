@@ -1,16 +1,18 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import TaskItem from '.';
+import { Task } from '@/utils/types';
 
 describe('TaskItem Component', () => {
   it('displays line-through when task is completed', async () => {
     const completedTask = { 
-      id: 1, title: 
-      'Test Task', 
-      completed: true 
+      id: 1, 
+      title: 'Test Task', 
+      completed: true, 
+      dueDate: '2024-09-07'
     };
 
-    render(<TaskItem task={completedTask} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+    render(<TaskItem task={completedTask} onEditTitle={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} onEditDueDate={jest.fn()} />);
   
     const textElement = await screen.findByText(completedTask.title);
     expect(textElement).toHaveClass('line-through');
@@ -20,7 +22,8 @@ describe('TaskItem Component', () => {
     let task = { 
       id: 1, 
       title: 'Test Task', 
-      completed: false 
+      completed: false, 
+      dueDate: '2024-09-07'
     };
 
     const onToggleComplete = jest.fn(() => {
@@ -28,7 +31,7 @@ describe('TaskItem Component', () => {
     });
 
     const { rerender } = render(
-      <TaskItem task={task} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={onToggleComplete} />
+      <TaskItem task={task} onEditTitle={jest.fn()} onDelete={jest.fn()} onToggleComplete={onToggleComplete} onEditDueDate={jest.fn()} />
     );
 
     const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
@@ -38,7 +41,7 @@ describe('TaskItem Component', () => {
 
     expect(onToggleComplete).toHaveBeenCalledTimes(1);
 
-    rerender(<TaskItem task={task} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={onToggleComplete} />);
+    rerender(<TaskItem task={task} onEditTitle={jest.fn()} onDelete={jest.fn()} onToggleComplete={onToggleComplete} onEditDueDate={jest.fn()} />);
 
     expect(checkbox.checked).toBeTruthy();
     
@@ -46,17 +49,18 @@ describe('TaskItem Component', () => {
     expect(textElement).toHaveClass('line-through');
   });
 
-  it('calls onEdit when the edit button is clicked', () => { 
+  it('calls onEditTitle when the edit button is clicked', () => { 
     const task = { 
       id: 1, 
       title: 'Test Task', 
-      completed: false 
+      completed: false, 
+      dueDate: '2024-09-07'
     };
-    const onEdit = jest.fn();  
+    const onEditTitle = jest.fn();  
     const onDelete = jest.fn();
     const onToggleComplete = jest.fn(); 
   
-    render(<TaskItem task={task} onEdit={onEdit} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+    render(<TaskItem task={task} onEditTitle={onEditTitle} onDelete={onDelete} onToggleComplete={onToggleComplete} onEditDueDate={jest.fn()} />);
   
     const editButton = screen.getByText('Edit');
     fireEvent.click(editButton);
@@ -67,18 +71,19 @@ describe('TaskItem Component', () => {
     const saveButton = screen.getByText('Save');
     fireEvent.click(saveButton);
     
-    expect(onEdit).toHaveBeenCalledWith(1, 'Updated Task');
+    expect(onEditTitle).toHaveBeenCalledWith(1, 'Updated Task');
   });
 
   it('calls onDelete when the delete button is clicked', () => {
     const onDelete = jest.fn();
     const task = { 
-      id: 1, title: 
-      'Test Task', 
-      completed: false 
+      id: 1, 
+      title: 'Test Task', 
+      completed: false, 
+      dueDate: '2024-09-07'
     };
   
-    render(<TaskItem task={task} onEdit={jest.fn()} onDelete={onDelete} onToggleComplete={jest.fn()} />);
+    render(<TaskItem task={task} onEditTitle={jest.fn()} onDelete={onDelete} onToggleComplete={jest.fn()} onEditDueDate={jest.fn()} />);
   
     const deleteButton = screen.getByText('Delete');
     fireEvent.click(deleteButton);

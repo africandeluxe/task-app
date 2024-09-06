@@ -1,27 +1,31 @@
 import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import TaskList from '../TaskList';
+import { Task } from '@/utils/types';
 
 describe('TaskList Component', () => {
   afterEach(cleanup);
   
-const tasks = [ { 
+const tasks: Task[] = [ { 
   id: 1, 
   title: 'Task 1', 
-  completed: false 
+  completed: false ,
+  dueDate: '2024-09-07'
 },
 { 
   id: 2, 
   title: 'Task 2', 
-  completed: true 
+  completed: true,
+  dueDate: '2024-09-07'
 }];
 
 const onEdit = jest.fn();
 const onDelete = jest.fn();
 const onToggleComplete = jest.fn();
+const OnEditDueDate = jest.fn();
 
   it('renders all tasks', () => {
-    render(<TaskList tasks={tasks} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+    render(<TaskList tasks={tasks} onEditTitle={jest.fn()} onEditDueDate={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
 
     const listItems = screen.getAllByRole('listitem');
 
@@ -29,7 +33,7 @@ const onToggleComplete = jest.fn();
   });
 
   it('interactions affect multiple items', () => {
-    render(<TaskList tasks={tasks} onEdit={onEdit} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
+    render(<TaskList tasks={tasks} onEditTitle={onEdit} onEditDueDate={jest.fn()} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
 
     const checkboxes = screen.getAllByRole('checkbox');
 
@@ -39,7 +43,7 @@ const onToggleComplete = jest.fn();
   });
 
   it('ensures checkboxes reflect task completion state', () => {
-    render(<TaskList tasks={tasks} onEdit={onEdit} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
+    render(<TaskList tasks={tasks} onEditTitle={onEdit} onEditDueDate={jest.fn()} onDelete={onDelete} onToggleComplete={onToggleComplete} />);
     
     const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
     
@@ -48,7 +52,7 @@ const onToggleComplete = jest.fn();
   });
 
   it('checks for no tasks scenario', () => {
-    render(<TaskList tasks={[]} onEdit={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+    render(<TaskList tasks={[]} onEditTitle={jest.fn()} onEditDueDate={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
     const lists = screen.queryAllByRole('list'); 
     expect(lists).toHaveLength(1); 
     expect(lists[0]).toBeEmptyDOMElement(); 

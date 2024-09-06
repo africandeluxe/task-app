@@ -77,4 +77,24 @@ describe('TaskApp Component', () => {
     await waitFor(() =>
       expect(screen.getByText('Edited Task')).toBeInTheDocument());   
   });
+
+  it('allows setting and editing due dates for tasks', () => {
+    render(<TaskApp />);
+
+    const input = screen.getByPlaceholderText('Enter task');
+    const addButton = screen.getByText('Add Task');
+
+    fireEvent.change(input, { target: { value: 'Task with Due Date' } });
+    fireEvent.click(addButton);
+
+    const dateInputs = screen.getAllByDisplayValue('') as HTMLInputElement[];;    
+    const dueDateInput = dateInputs.find(input => input.type === 'date');
+
+    if (dueDateInput) {
+      fireEvent.change(dueDateInput, { target: { value: '2025-12-31' } });
+      expect(dueDateInput).toHaveValue('2025-12-31');
+    } else {
+      throw new Error('Due date input not found');
+    }
+  });
 });
