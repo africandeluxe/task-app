@@ -52,7 +52,7 @@ const TaskApp: React.FC = () => {
       <Filter filter={filter} onFilterChange={filterTasks} />
       <TaskCounter totalTasks={tasks.length} completedTasks={tasks.filter(task => task.completed).length} />
       <TaskList tasks={getFilteredTasks()} onEditTitle={editTaskTitle} onEditDueDate={editTaskDueDate} onDelete={deleteTask} onToggleComplete={toggleComplete} />
-      <ClearAllTasks onClearAll={clearAllTasks} />
+      <ClearAllTasks onClearAll={clearAllTasks} isDisabled={tasks.length === 0} />
     </div>
   );
 };

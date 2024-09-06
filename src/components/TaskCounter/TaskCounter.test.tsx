@@ -38,4 +38,11 @@ describe('TaskCounter Component', () => {
     expect(screen.getByText('Total Tasks: 5')).toBeInTheDocument();
     expect(screen.getByText('Completed Tasks: 0')).toBeInTheDocument();
   });
+
+  it('displays correct count when no tasks exist', () => {
+    render(<TaskCounter totalTasks={0} completedTasks={0} />);
+  
+    expect(screen.getByText('Total Tasks: 0')).toBeInTheDocument();
+    expect(screen.getByText('Completed Tasks: 0')).toBeInTheDocument();
+  });
 });

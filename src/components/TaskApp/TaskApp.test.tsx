@@ -97,4 +97,23 @@ describe('TaskApp Component', () => {
       throw new Error('Due date input not found');
     }
   });
+
+  it('filters tasks correctly when "Completed" is selected', () => {
+    render(<TaskApp />);
+  
+    const input = screen.getByPlaceholderText('Enter task');
+    fireEvent.change(input, { target: { value: 'Task 1' } });
+    fireEvent.click(screen.getByText('Add Task'));
+  
+    fireEvent.change(input, { target: { value: 'Task 2' } });
+    fireEvent.click(screen.getByText('Add Task'));
+  
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]); // Mark Task 1 as completed
+  
+    fireEvent.click(screen.getByText('Completed'));
+  
+    expect(screen.queryByText('Task 1')).toBeInTheDocument();
+    expect(screen.queryByText('Task 2')).not.toBeInTheDocument();
+  });
 });

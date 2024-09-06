@@ -57,4 +57,35 @@ const OnEditDueDate = jest.fn();
     expect(lists).toHaveLength(1); 
     expect(lists[0]).toBeEmptyDOMElement(); 
   });
+  
+  it('calls onEditTitle when a task title is edited', () => {
+    const tasks = [{ 
+      id: 1, 
+      title: 'Task 1', 
+      completed: false, 
+      dueDate: '2024-09-07'
+    },
+    { 
+      id: 2, 
+      title: 'Task 2', 
+      completed: true, 
+      dueDate: '2024-09-07' 
+    },
+    ];
+
+    const onEdit = jest.fn();
+    
+    render(<TaskList tasks={tasks} onEditTitle={onEdit} onEditDueDate={jest.fn()} onDelete={jest.fn()} onToggleComplete={jest.fn()} />);
+    
+    const editButtons = screen.getAllByText('Edit');
+    fireEvent.click(editButtons[0]);
+  
+    const input = screen.getByDisplayValue('Task 1');
+    fireEvent.change(input, { target: { value: 'Updated Task' } });
+  
+    const saveButton = screen.getByText('Save');
+    fireEvent.click(saveButton);
+  
+    expect(onEdit).toHaveBeenCalledWith(1, 'Updated Task');
+  });
 });

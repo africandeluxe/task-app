@@ -10,12 +10,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    if (inputValue.trim() === '') {
+    if (inputValue.trim() === '' || inputValue.length > 100) {
       return;
     }
-
     onAddTask(inputValue);
-    setInputValue('')
+    setInputValue('');
   };
 
   return (

@@ -42,4 +42,19 @@ describe('TaskForm Component', () => {
   
     expect(input).toHaveValue('');
   });
+
+  it('prevents submission of overly long task titles', () => {
+    const onAddTask = jest.fn();
+    render(<TaskForm onAddTask={onAddTask} />);
+  
+    const input = screen.getByPlaceholderText('Enter task');
+    const addButton = screen.getByRole('button', { name: /add task/i });
+  
+    const longTask = 'x'.repeat(300);
+    fireEvent.change(input, { target: { value: longTask } });
+    
+    fireEvent.click(addButton);
+  
+    expect(onAddTask).not.toHaveBeenCalled();
+  });
 });
