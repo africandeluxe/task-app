@@ -109,7 +109,7 @@ describe('TaskApp Component', () => {
     fireEvent.click(screen.getByText('Add Task'));
   
     const checkboxes = screen.getAllByRole('checkbox');
-    fireEvent.click(checkboxes[0]); // Mark Task 1 as completed
+    fireEvent.click(checkboxes[0]); 
   
     fireEvent.click(screen.getByText('Completed'));
   
